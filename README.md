@@ -102,8 +102,29 @@ Step 3: Handle layout with List-Detail composable support by Material3 composabl
 
 Step 4: State management và App continually 
 
+## App Architecture 
 
-### Conclusion
+![image](https://github.com/user-attachments/assets/d97c34b1-ccb6-423a-b18f-98d00052a368)
+
+- UI layer: The role of the UI layer, or presentation layer, is to display the application data on the screen. Whenever the data changes due to a user interaction, such as pressing a button, the UI should update to reflect the changes.
+The UI layer is made up of the following components:
+
+  - UI elements: components that render the data on the screen. You build these elements using Jetpack Compose.
+  - State holders: components that hold the data, expose it to the UI, and handle the app logic. An example state holder is ViewModel.
+
+- ViewModel: component holds and exposes the state the UI consumes.
+
+- UI State:
+The UI is what the user sees, and the UI state is what the app says they should see. The UI is the visual representation of the UI state. Any changes to the UI state immediately are reflected in the UI.
+
+
+![image](https://github.com/user-attachments/assets/2ed52356-3636-4b51-bae0-5668fc304639)
+
+
+
+
+
+## Conclusion
 
 By completing the exercise, you have demonstrated your ability to configure and utilize the Adaptive layout on Large Screens in Jetpack Compose. 
 
