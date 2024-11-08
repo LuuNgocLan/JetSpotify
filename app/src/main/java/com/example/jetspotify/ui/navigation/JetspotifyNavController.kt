@@ -11,27 +11,28 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 object MainDestinations {
-    const val HOME_ROUTE = "home"
-    const val SNACK_DETAIL_ROUTE = "snack"
-    const val SNACK_ID_KEY = "snackId"
-    const val ORIGIN = "origin"
+    const val HOME_TAB = "home"
+    const val SEARCH_TAB = "search"
+    const val LIBRARY_TAB = "library"
+    const val PREMIUM_TAB = "premium"
+    const val EPISODE = "episode"
 }
 
 /**
- * Remembers and creates an instance of [JetsnackNavController]
+ * Remembers and creates an instance of [rememberJetSpotifyNavController]
  */
 @Composable
-fun rememberJetsnackNavController(
+fun rememberJetSpotifyNavController(
     navController: NavHostController = rememberNavController()
-): JetsnackNavController = remember(navController) {
-    JetsnackNavController(navController)
+): JetSpotifyNavController = remember(navController) {
+    JetSpotifyNavController(navController)
 }
 
 /**
  * Responsible for holding UI Navigation logic.
  */
 @Stable
-class JetsnackNavController(
+class JetSpotifyNavController(
     val navController: NavHostController,
 ) {
 
@@ -57,10 +58,10 @@ class JetsnackNavController(
         }
     }
 
-    fun navigateToSnackDetail(snackId: Long, origin: String, from: NavBackStackEntry) {
+    fun navigateToDetail(episodeId: Int, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.SNACK_DETAIL_ROUTE}/$snackId?origin=$origin")
+            navController.navigate("${MainDestinations.EPISODE}/$episodeId?")
         }
     }
 }

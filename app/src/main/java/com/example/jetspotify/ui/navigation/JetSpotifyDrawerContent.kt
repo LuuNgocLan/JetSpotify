@@ -29,12 +29,12 @@ import com.example.jetspotify.ui.theme.SpotifyColors
 @Composable
 fun JetSpotifyDrawerContent(
     selectedDestination: JetSpotifyTab,
+    navItems: List<NavigationItemContent>,
     onTabPressed: ((JetSpotifyTab) -> Unit),
-    navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        for (navItem in navigationItemContentList) {
+        for (navItem in navItems) {
             DrawerNavigationItem(
                 selected = selectedDestination == navItem.jetSpotifyTab,
                 tab = navItem,

@@ -15,13 +15,15 @@
  */
 package com.example.jetspotify.ui.main
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.jetspotify.ui.navigation.JetSpotifyTab
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class JetSpotifyViewModel : ViewModel() {
+class JetSpotifyViewModel(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(JetSpotifyUiState())
     val uiState: StateFlow<JetSpotifyUiState> get() = _uiState
@@ -39,14 +41,6 @@ class JetSpotifyViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 isShowingHomepage = true
-            )
-        }
-    }
-
-    fun updateCurrentMailbox(jetSpotifyTab: JetSpotifyTab) {
-        _uiState.update {
-            it.copy(
-                currentSelectedTab = jetSpotifyTab
             )
         }
     }

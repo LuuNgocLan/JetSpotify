@@ -15,9 +15,6 @@
  */
 package com.example.jetspotify.ui.main
 
-import com.example.jetspotify.ui.navigation.JetSpotifyTab
-
 data class JetSpotifyUiState(
-    val currentSelectedTab: JetSpotifyTab = JetSpotifyTab.Home,
     val isShowingHomepage: Boolean = true,
 )

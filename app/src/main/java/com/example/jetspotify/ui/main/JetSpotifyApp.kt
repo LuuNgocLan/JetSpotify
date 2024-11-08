@@ -20,8 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jetspotify.ui.navigation.JetSpotifyTab
+import com.example.jetspotify.ui.navigation.rememberJetSpotifyNavController
 import com.example.jetspotify.ui.utils.JetSpotifyContentType
 import com.example.jetspotify.ui.utils.JetSpotifyNavigationType
 
@@ -30,41 +31,44 @@ fun JetSpotifyApp(
     windowSize: WindowWidthSizeClass,
     modifier: Modifier = Modifier,
 ) {
+    val navHostController = rememberJetSpotifyNavController()
+    val navBackStackEntry = navHostController.navController.currentBackStackEntryAsState()
     val navigationType: JetSpotifyNavigationType
     val contentType: JetSpotifyContentType
     val viewModel: JetSpotifyViewModel = viewModel()
     val jetSpotifyUiState = viewModel.uiState.collectAsState().value
-    val navController = rememberNavController()
 
     when (windowSize) {
         WindowWidthSizeClass.Compact -> {
             navigationType = JetSpotifyNavigationType.BOTTOM_NAVIGATION
             contentType = JetSpotifyContentType.LIST_ONLY
         }
+
         WindowWidthSizeClass.Medium -> {
             navigationType = JetSpotifyNavigationType.NAVIGATION_RAIL
             contentType = JetSpotifyContentType.LIST_ONLY
         }
+
         WindowWidthSizeClass.Expanded -> {
             navigationType = JetSpotifyNavigationType.PERMANENT_NAVIGATION_DRAWER
             contentType = JetSpotifyContentType.LIST_AND_DETAIL
         }
+
         else -> {
             navigationType = JetSpotifyNavigationType.BOTTOM_NAVIGATION
             contentType = JetSpotifyContentType.LIST_ONLY
         }
     }
     JetSpotifyMainScreen(
+        navController = navHostController.navController,
         navigationType = navigationType,
-        contentType = contentType,
-        jetSpotifyUiState = jetSpotifyUiState,
         onTabPressed = { jetSpotifyTab: JetSpotifyTab ->
-            viewModel.updateCurrentMailbox(jetSpotifyTab = jetSpotifyTab)
-            viewModel.resetHomeScreenStates()
+            navHostController.navigateToBottomBarRoute(jetSpotifyTab.name)
         },
         onDetailScreenBackPressed = {
-            viewModel.resetHomeScreenStates()
+            // Handle back press
         },
         modifier = modifier
     )
 }
+

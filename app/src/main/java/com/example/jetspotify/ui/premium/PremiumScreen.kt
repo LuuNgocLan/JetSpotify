@@ -15,6 +15,6 @@ fun PremiumScreen() {
             .fillMaxSize()
             .background(color = SpotifyColors.SpotifyDarkGrey)
     ) {
-        Text(text = "Premium")
+        Text(text = "Premium Screen")
     }
 }

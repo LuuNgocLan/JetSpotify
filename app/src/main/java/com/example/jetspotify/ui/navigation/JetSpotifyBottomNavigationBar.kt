@@ -20,20 +20,20 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun JetSpotifyBottomNavigationBar(
-//    navController: NavController,
+    modifier: Modifier = Modifier,
+    navController: JetSpotifyNavController = rememberJetSpotifyNavController(),
+    navItems: List<NavigationItemContent>,
     currentTab: JetSpotifyTab,
     onTabPressed: ((JetSpotifyTab) -> Unit),
-    navigationItemContentList: List<NavigationItemContent>,
-    modifier: Modifier = Modifier
-) {
 
+) {
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
         tonalElevation = 0.dp,
         windowInsets = WindowInsets.navigationBars,
     ) {
-        for (navItem in navigationItemContentList) {
+        for (navItem in navItems) {
             NavigationBarItem(
                 interactionSource = remember { MutableInteractionSource() },
                 label = {

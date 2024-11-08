@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.example.jetspotify.R
 import com.example.jetspotify.components.HomeTopBar
 import com.example.jetspotify.data.model.Category
 import com.example.jetspotify.data.model.LocalDataProvider
@@ -164,13 +166,13 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .height(58.dp)
+                .height(dimensionResource(id = R.dimen.category_thumbnail_size))
                 .clip(RoundedCornerShape(4.dp))
                 .background(color = Color.Gray.copy(alpha = 0.5f)),
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(58.dp)
+                    .size(dimensionResource(id = R.dimen.category_thumbnail_size))
                     .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
                     .background(color = Color.Gray.copy(alpha = 0.5f)),
                 model = category.icons.first().url ?: "",
@@ -196,15 +198,15 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
 fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
     Box {
         Column(
-            horizontalAlignment = Alignment.Start, modifier = modifier.width(154.dp)
+            horizontalAlignment = Alignment.Start,
+            modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(154.dp)
+                    .size(dimensionResource(id = R.dimen.album_thumbnail_size))
                     .background(color = Color.Gray.copy(alpha = 0.5f)),
                 model = album.images.firstOrNull { e -> e.url.isEmpty() }?.url ?: "",
                 contentDescription = "Album",
-//                placeholder = painterResource(drawable.ic_menu_camera),
                 contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -234,11 +236,12 @@ fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
 fun ShowItem(show: Show, modifier: Modifier = Modifier) {
     Box {
         Column(
-            horizontalAlignment = Alignment.Start, modifier = modifier.width(154.dp)
+            horizontalAlignment = Alignment.Start,
+            modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(154.dp)
+                    .size(dimensionResource(id = R.dimen.album_thumbnail_size))
                     .background(color = Color.Gray.copy(alpha = 0.5f))
                     .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)),
                 model = show.thumbnail,

@@ -13,12 +13,12 @@ import androidx.compose.ui.res.painterResource
 @Composable
 fun JetSpotifyNavigationRail(
     currentTab: JetSpotifyTab,
+    navItems: List<NavigationItemContent>,
     onTabPressed: ((JetSpotifyTab) -> Unit),
-    navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier
 ) {
     NavigationRail(modifier = modifier) {
-        for (navItem in navigationItemContentList) {
+        for (navItem in navItems) {
             NavigationRailItem(
                 selected = currentTab == navItem.jetSpotifyTab,
                 onClick = { onTabPressed(navItem.jetSpotifyTab) },
