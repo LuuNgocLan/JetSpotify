@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.jetspotify.ui
+package com.example.jetspotify.ui.main
 
-import com.example.jetspotify.data.JetSpotifyTab
+import com.example.jetspotify.ui.navigation.JetSpotifyTab
 
 data class JetSpotifyUiState(
     val currentSelectedTab: JetSpotifyTab = JetSpotifyTab.Home,
-    val isShowingHomepage: Boolean = true
+    val isShowingHomepage: Boolean = true,
 )

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.jetspotify.ui
+package com.example.jetspotify.ui.main
 
 import androidx.lifecycle.ViewModel
-import com.example.jetspotify.data.JetSpotifyTab
+import com.example.jetspotify.ui.navigation.JetSpotifyTab
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -24,24 +24,20 @@ import kotlinx.coroutines.flow.update
 class JetSpotifyViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(JetSpotifyUiState())
-    val uiState: StateFlow<JetSpotifyUiState> = _uiState
+    val uiState: StateFlow<JetSpotifyUiState> get() = _uiState
 
-    //This initialization method was added in the step focused on avoiding unnecessary background work
     init {
         initializeUIState()
     }
 
     private fun initializeUIState() {
-        _uiState.value =
-            JetSpotifyUiState(
-                // initial value
-            )
+        _uiState.value = JetSpotifyUiState(
+        )
     }
 
     fun resetHomeScreenStates() {
         _uiState.update {
             it.copy(
-                // update value
                 isShowingHomepage = true
             )
         }
@@ -50,7 +46,6 @@ class JetSpotifyViewModel : ViewModel() {
     fun updateCurrentMailbox(jetSpotifyTab: JetSpotifyTab) {
         _uiState.update {
             it.copy(
-                // update value
                 currentSelectedTab = jetSpotifyTab
             )
         }

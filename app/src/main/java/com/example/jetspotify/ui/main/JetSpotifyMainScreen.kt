@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.jetspotify.ui
+package com.example.jetspotify.ui.main
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -36,11 +36,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.jetspotify.R
-import com.example.jetspotify.data.JetSpotifyTab
 import com.example.jetspotify.ui.home.HomeScreen
 import com.example.jetspotify.ui.navigation.JetSpotifyBottomNavigationBar
 import com.example.jetspotify.ui.navigation.JetSpotifyDrawerContent
 import com.example.jetspotify.ui.navigation.JetSpotifyNavigationRail
+import com.example.jetspotify.ui.navigation.JetSpotifyTab
 import com.example.jetspotify.ui.navigation.NavigationItemContent
 import com.example.jetspotify.ui.utils.JetSpotifyContentType
 import com.example.jetspotify.ui.utils.JetSpotifyNavigationType
@@ -49,7 +49,7 @@ import com.example.jetspotify.ui.utils.JetSpotifyNavigationType
 fun JetSpotifyMainScreen(
     navigationType: JetSpotifyNavigationType,
     contentType: JetSpotifyContentType,
-    replyUiState: JetSpotifyUiState,
+    jetSpotifyUiState: JetSpotifyUiState,
     onTabPressed: (JetSpotifyTab) -> Unit,
     onDetailScreenBackPressed: () -> Unit,
     modifier: Modifier = Modifier
@@ -86,7 +86,7 @@ fun JetSpotifyMainScreen(
             drawerContent = {
                 PermanentDrawerSheet(Modifier.width(dimensionResource(R.dimen.drawer_width))) {
                     JetSpotifyDrawerContent(
-                        selectedDestination = replyUiState.currentSelectedTab,
+                        selectedDestination = jetSpotifyUiState.currentSelectedTab,
                         onTabPressed = onTabPressed,
                         navigationItemContentList = navigationItemContentList,
                         modifier = Modifier
@@ -99,13 +99,14 @@ fun JetSpotifyMainScreen(
                 }
             },
         ) {
-            HomeScreen(navigationType = navigationType)
+            // Main Nav host content
+            HomeScreen()
         }
     } else {
         JetSpotifyAppContent(
             navigationType = navigationType,
             contentType = contentType,
-            replyUiState = replyUiState,
+            jetSpotifyUiState = jetSpotifyUiState,
             onTabPressed = onTabPressed,
             navigationItemContentList = navigationItemContentList,
             modifier = modifier
@@ -117,7 +118,7 @@ fun JetSpotifyMainScreen(
 private fun JetSpotifyAppContent(
     navigationType: JetSpotifyNavigationType,
     contentType: JetSpotifyContentType,
-    replyUiState: JetSpotifyUiState,
+    jetSpotifyUiState: JetSpotifyUiState,
     onTabPressed: ((JetSpotifyTab) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier,
@@ -126,7 +127,7 @@ private fun JetSpotifyAppContent(
         AnimatedVisibility(visible = navigationType == JetSpotifyNavigationType.NAVIGATION_RAIL) {
             val navigationRailContentDescription = stringResource(R.string.navigation_rail)
             JetSpotifyNavigationRail(
-                currentTab = replyUiState.currentSelectedTab,
+                currentTab = jetSpotifyUiState.currentSelectedTab,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
             )
@@ -137,10 +138,11 @@ private fun JetSpotifyAppContent(
                 .align(Alignment.CenterVertically)
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
+            // Main Nav host content
             Box(modifier = Modifier.fillMaxSize()) {
-                HomeScreen(navigationType = navigationType)
+                HomeScreen()
             }
-
+            // Bottom Navigation
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,7 +150,7 @@ private fun JetSpotifyAppContent(
             ) {
                 AnimatedVisibility(visible = navigationType == JetSpotifyNavigationType.BOTTOM_NAVIGATION) {
                     JetSpotifyBottomNavigationBar(
-                        currentTab = replyUiState.currentSelectedTab,
+                        currentTab = jetSpotifyUiState.currentSelectedTab,
                         onTabPressed = onTabPressed,
                         navigationItemContentList = navigationItemContentList,
 
@@ -157,7 +159,6 @@ private fun JetSpotifyAppContent(
             }
 
         }
-
 
     }
 }

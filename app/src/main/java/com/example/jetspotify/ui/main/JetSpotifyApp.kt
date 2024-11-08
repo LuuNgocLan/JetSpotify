@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.jetspotify.ui
+package com.example.jetspotify.ui.main
 
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -21,7 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.jetspotify.data.JetSpotifyTab
+import com.example.jetspotify.ui.navigation.JetSpotifyTab
 import com.example.jetspotify.ui.utils.JetSpotifyContentType
 import com.example.jetspotify.ui.utils.JetSpotifyNavigationType
 
@@ -33,7 +33,7 @@ fun JetSpotifyApp(
     val navigationType: JetSpotifyNavigationType
     val contentType: JetSpotifyContentType
     val viewModel: JetSpotifyViewModel = viewModel()
-    val replyUiState = viewModel.uiState.collectAsState().value
+    val jetSpotifyUiState = viewModel.uiState.collectAsState().value
     val navController = rememberNavController()
 
     when (windowSize) {
@@ -57,7 +57,7 @@ fun JetSpotifyApp(
     JetSpotifyMainScreen(
         navigationType = navigationType,
         contentType = contentType,
-        replyUiState = replyUiState,
+        jetSpotifyUiState = jetSpotifyUiState,
         onTabPressed = { jetSpotifyTab: JetSpotifyTab ->
             viewModel.updateCurrentMailbox(jetSpotifyTab = jetSpotifyTab)
             viewModel.resetHomeScreenStates()

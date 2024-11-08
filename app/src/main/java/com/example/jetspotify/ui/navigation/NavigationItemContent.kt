@@ -1,7 +1,6 @@
 package com.example.jetspotify.ui.navigation
 
 import androidx.annotation.DrawableRes
-import com.example.jetspotify.data.JetSpotifyTab
 
 data class NavigationItemContent(
     val jetSpotifyTab: JetSpotifyTab,

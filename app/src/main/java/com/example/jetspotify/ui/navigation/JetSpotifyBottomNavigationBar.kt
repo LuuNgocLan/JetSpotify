@@ -16,9 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.jetspotify.data.JetSpotifyTab
 
 
 @Composable
@@ -42,7 +39,7 @@ fun JetSpotifyBottomNavigationBar(
                 label = {
                     Text(
                         navItem.text,
-                        color = if (currentTab == navItem.jetSpotifyTab) Color.White else Color.LightGray
+                        color = if (currentTab == navItem.jetSpotifyTab)  MaterialTheme.colorScheme.onSecondary else  MaterialTheme.colorScheme.secondary
                     )
                 },
                 selected = currentTab == navItem.jetSpotifyTab,
@@ -52,8 +49,8 @@ fun JetSpotifyBottomNavigationBar(
                         painter = painterResource(id = if (currentTab == navItem.jetSpotifyTab) navItem.selectedIcon else navItem.unSelectedIcon),
                         contentDescription = navItem.text,
                         colorFilter = if (currentTab == navItem.jetSpotifyTab) ColorFilter.tint(
-                            Color.White
-                        ) else ColorFilter.tint(Color.LightGray)
+                            MaterialTheme.colorScheme.onSecondary
+                        ) else ColorFilter.tint( MaterialTheme.colorScheme.secondary)
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(

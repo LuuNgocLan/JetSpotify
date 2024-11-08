@@ -24,6 +24,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,19 +35,39 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.jetspotify.components.HomeTopBar
 import com.example.jetspotify.data.model.Category
 import com.example.jetspotify.data.model.LocalDataProvider
-import com.example.jetspotify.ui.utils.JetSpotifyNavigationType
+import com.example.jetspotify.data.model.Show
+import com.example.jetspotify.model.Album
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(navigationType: JetSpotifyNavigationType,) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory()),
+) {
     val context = LocalContext.current
-    val albums = LocalDataProvider.loadCategories(context)
+    val _uiState = remember { mutableStateOf<HomeUiState?>(null) }
+    val uiState = _uiState.value
+
+    // Load data once when the composable enters the composition
+    LaunchedEffect(Unit) {
+        val categories = LocalDataProvider.loadCategories(context = context)
+        val albums = LocalDataProvider.loadAlbums(context = context)
+        val shows = LocalDataProvider.sampleShowsData()
+        _uiState.value = uiState?.copy(
+            categories = categories, albums = albums, shows = shows
+        ) ?: HomeUiState(
+            categories = categories, albums = albums, shows = shows
+        )
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -54,8 +77,7 @@ fun HomeScreen(navigationType: JetSpotifyNavigationType,) {
         // Sticky header
         stickyHeader {
             Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.background
+                modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.background
             ) {
                 Column {
                     HomeTopBar()
@@ -76,59 +98,43 @@ fun HomeScreen(navigationType: JetSpotifyNavigationType,) {
                     .height(((58 + 8) * 2).dp), // Fixed height based on number of rows
                 userScrollEnabled = false // Disable grid scrolling
             ) {
-                items(albums.take(8)) { category ->
+
+                items(uiState?.categories?.take(8) ?: emptyList()) { category ->
                     CategoryItem(
-                        category = category,
-                        modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
+                        category = category, modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
                     )
                 }
             }
         }
 
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        // Jump back in section
+        // Shows
         item {
             Text(
-                text = "Jump back in",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                text = "Your shows", style = MaterialTheme.typography.titleLarge.copy(
+                    color = Color.White, fontWeight = FontWeight.Bold
+                ), modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
             )
         }
 
         item {
-            // Horizontal scrolling albums
             LazyRow(
                 modifier = Modifier.padding(start = 16.dp),
                 contentPadding = PaddingValues(end = 16.dp)
             ) {
-                items(albums) { category ->
-                    AlbumItem(
-                        category = category,
-                        modifier = Modifier.padding(end = 8.dp)
+                items(uiState?.shows ?: emptyList()) { show ->
+                    ShowItem(
+                        show = show, modifier = Modifier.padding(end = 8.dp)
                     )
                 }
             }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
         }
 
         // Your top mixes section
         item {
             Text(
-                text = "Your top mixes",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                text = "Your top mixes", style = MaterialTheme.typography.titleLarge.copy(
+                    color = Color.White, fontWeight = FontWeight.Bold
+                ), modifier = Modifier.padding(16.dp)
             )
         }
 
@@ -137,10 +143,9 @@ fun HomeScreen(navigationType: JetSpotifyNavigationType,) {
                 modifier = Modifier.padding(start = 16.dp),
                 contentPadding = PaddingValues(end = 16.dp)
             ) {
-                items(albums) { category ->
+                items(uiState?.albums ?: emptyList()) { album ->
                     AlbumItem(
-                        category = category,
-                        modifier = Modifier.padding(end = 8.dp)
+                        album = album, modifier = Modifier.padding(end = 8.dp)
                     )
                 }
             }
@@ -148,32 +153,6 @@ fun HomeScreen(navigationType: JetSpotifyNavigationType,) {
 
         item {
             Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        // Your top mixes section
-        item {
-            Text(
-                text = "Recents",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-            )
-        }
-
-        item {
-            LazyRow(
-                modifier = Modifier.padding(start = 16.dp),
-                contentPadding = PaddingValues(end = 16.dp)
-            ) {
-                items(albums) { category ->
-                    AlbumItem(
-                        category = category,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                }
-            }
         }
     }
 }
@@ -214,31 +193,93 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun AlbumItem(category: Category, modifier: Modifier = Modifier) {
+fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
     Box {
         Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = modifier
-                .width(154.dp)
+            horizontalAlignment = Alignment.Start, modifier = modifier.width(154.dp)
         ) {
             AsyncImage(
                 modifier = Modifier
                     .size(154.dp)
                     .background(color = Color.Gray.copy(alpha = 0.5f)),
-                model = category.icons.first().url ?: "",
+                model = album.images.firstOrNull { e -> e.url.isEmpty() }?.url ?: "",
                 contentDescription = "Album",
 //                placeholder = painterResource(drawable.ic_menu_camera),
                 contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = category.name,
-                maxLines = 2,
+                text = album.name,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold
                 ),
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = album.artists.map { it.name }.joinToString("-"),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold
+                ),
+            )
         }
     }
+}
+
+
+@Composable
+fun ShowItem(show: Show, modifier: Modifier = Modifier) {
+    Box {
+        Column(
+            horizontalAlignment = Alignment.Start, modifier = modifier.width(154.dp)
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .size(154.dp)
+                    .background(color = Color.Gray.copy(alpha = 0.5f))
+                    .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)),
+                model = show.thumbnail,
+                contentDescription = show.showName,
+                contentScale = ContentScale.Crop,
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = show.category.map { it }.joinToString("-"),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = show.showName,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Medium
+                ),
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Show-${show.showType}",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = Color.Gray, fontSize = 11.sp, fontWeight = FontWeight.Medium
+                ),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
 }

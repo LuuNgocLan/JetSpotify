@@ -20,9 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.jetspotify.data.JetSpotifyTab
 import com.example.jetspotify.ui.theme.SpotifyColors
 
 
@@ -74,13 +74,17 @@ private fun DrawerNavigationItem(
             Spacer(modifier = Modifier.width(12.dp))
             Image(
                 painter = painterResource(id = if (selected) tab.selectedIcon else tab.unSelectedIcon),
-                contentDescription = tab.text
+                contentDescription = tab.text,
+                colorFilter = if (selected) ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary) else ColorFilter.tint(
+                    color = MaterialTheme.colorScheme.secondary
+                )
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = tab.text,
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.White
+                color = if (selected) MaterialTheme.colorScheme.onSecondary else
+                    MaterialTheme.colorScheme.secondary
             )
         }
     }

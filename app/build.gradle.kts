@@ -75,7 +75,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycle_version"]}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["lifecycle_version"]}")
-
+    // Compose
     implementation(platform("androidx.compose:compose-bom:2024.09.03"))
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.material3:material3")
@@ -86,11 +86,11 @@ dependencies {
     implementation("androidx.compose.foundation:foundation")
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.8.3")
-
+    // Adaptive layout
     implementation("androidx.compose.material3.adaptive:adaptive:1.0.0-beta04")
     implementation("androidx.compose.material3.adaptive:adaptive-layout:1.0.0-beta04")
     implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.0.0-beta04")
-
+    
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     // Coil
