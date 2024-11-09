@@ -2,7 +2,6 @@ package com.example.jetspotify.data.model
 
 import android.content.Context
 import com.example.jetspotify.model.Album
-import com.example.jetspotify.model.AlbumsData
 import com.example.jetspotify.model.Episode
 import kotlinx.serialization.json.Json
 import java.io.IOException
@@ -35,11 +34,37 @@ object LocalDataProvider {
         return playlistData.items
     }
 
-    fun loadAlbums(context: Context): List<Album> {
-        val json = loadJSONFromAsset(context, "albums_data.json")
-        val albumData = Json.decodeFromString<AlbumsData>(json.toString())
-        return albumData.albums
-    }
+    fun loadAlbums(): List<Album> = listOf(
+        Album(
+            name = "Happier Than Ever",
+            availableMarkets = listOf("US", "CA", "MX"),
+            href = "https://api.spotify.com/v1/albums/1ZfK0eV4hjw7Z5z9Z0Z8lJ",
+            id = "1ZfK0eV4hjw7Z5z9Z0Z8lJ",
+            images = "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2d/f3/c9/2df3c9fd-e0eb-257c-c035-b04f05a66580/21UMGIM36691.rgb.jpg/1200x1200bb.jpg",
+        ),
+
+        Album(
+            name = "Taylor Swift eras ranking – The Marquee",
+            availableMarkets = listOf("US", "CA", "MX"),
+            href = "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/fa9d29113106917.6021714777c0e.png",
+            id = "7fJJK56U9fHixgO0HQkhtI",
+            images = "https://www.mhsmarquee.com/wp-content/uploads/2023/12/taylor-swift-960x1200.jpg",
+        ),
+        Album(
+            name = "Raised Up Right",
+            availableMarkets = listOf("US", "CA", "MX"),
+            href = "https://api.spotify.com/v1/albums/4yP0hdKOZPNshxUOjY0cZj",
+            id = "4yP0hdKOZPNshxUOjY0cZj",
+            images = "https://cdns-images.dzcdn.net/images/cover/2ecc057464cd10bdce436adafcc92ba2/0x1900-000000-80-0-0.jpg",
+        ),
+        Album(
+            name = "SOUR",
+            availableMarkets = listOf("US", "CA", "MX"),
+            href = "https://api.spotify.com/v1/albums/6s84u2TUpR3wdUv4NgKA2j",
+            id = "6s84u2TUpR3wdUv4NgKA2j",
+            images = "https://i.scdn.co/image/ab67616d0000b273f4b3b3b3b3b3b3b3b3b3b3",
+        ),
+    )
 
     fun sampleEpisodeData(): List<Episode> {
         return listOf(

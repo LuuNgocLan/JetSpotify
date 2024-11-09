@@ -2,6 +2,7 @@ package com.example.jetspotify.ui.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.window.core.layout.WindowWidthSizeClass
 import coil3.compose.AsyncImage
 import com.example.jetspotify.R
 import com.example.jetspotify.components.HomeTopBar
@@ -57,11 +60,12 @@ fun HomeScreen(
     val context = LocalContext.current
     val _uiState = remember { mutableStateOf<HomeUiState?>(null) }
     val uiState = _uiState.value
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 
     // Load data once when the composable enters the composition
     LaunchedEffect(Unit) {
         val categories = LocalDataProvider.loadCategories(context = context)
-        val albums = LocalDataProvider.loadAlbums(context = context)
+        val albums = LocalDataProvider.loadAlbums()
         val shows = LocalDataProvider.sampleShowsData()
         _uiState.value = uiState?.copy(
             categories = categories, albums = albums, shows = shows
@@ -94,7 +98,7 @@ fun HomeScreen(
         // Categories Grid
         item {
             LazyVerticalGrid(
-                columns = GridCells.Fixed(4),
+                columns = GridCells.Fixed(if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) 4 else 2),
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .height(((58 + 8) * 2).dp), // Fixed height based on number of rows
@@ -126,7 +130,9 @@ fun HomeScreen(
                 items(uiState?.shows ?: emptyList()) { show ->
                     ShowItem(
                         show = show, modifier = Modifier.padding(end = 8.dp)
-                    )
+                    ) {
+                        /* Handle on item click */
+                    }
                 }
             }
         }
@@ -148,7 +154,9 @@ fun HomeScreen(
                 items(uiState?.albums ?: emptyList()) { album ->
                     AlbumItem(
                         album = album, modifier = Modifier.padding(end = 8.dp)
-                    )
+                    ) {
+                        /* Handle on item click */
+                    }
                 }
             }
         }
@@ -168,7 +176,7 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.category_thumbnail_size))
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = Color.Gray.copy(alpha = 0.5f)),
+                .background(color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)),
         ) {
             AsyncImage(
                 modifier = Modifier
@@ -177,7 +185,6 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
                     .background(color = Color.Gray.copy(alpha = 0.5f)),
                 model = category.icons.first().url ?: "",
                 contentDescription = "Category",
-//                placeholder = painterResource(R.drawable.ic_menu_camera),
                 contentScale = ContentScale.Crop,
             )
             Text(
@@ -185,7 +192,9 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 ),
                 modifier = Modifier.padding(16.dp)
             )
@@ -195,8 +204,14 @@ fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
-    Box {
+fun AlbumItem(album: Album, modifier: Modifier = Modifier, onItemEpisodeClick: (String) -> Unit) {
+    Box(
+        modifier = modifier.clickable(
+            onClick = {
+                /*Handle click on item */
+            },
+        )
+    ) {
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
@@ -205,13 +220,13 @@ fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(dimensionResource(id = R.dimen.album_thumbnail_size))
                     .background(color = Color.Gray.copy(alpha = 0.5f)),
-                model = album.images.firstOrNull { e -> e.url.isEmpty() }?.url ?: "",
+                model = album.images ?: "",
                 contentDescription = "Album",
                 contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = album.name,
+                text = album.name ?: "",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -220,7 +235,7 @@ fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = album.artists.map { it.name }.joinToString("-"),
+                text = album.artists?.map { it.name }?.joinToString("-") ?: "",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -233,8 +248,10 @@ fun AlbumItem(album: Album, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun ShowItem(show: Show, modifier: Modifier = Modifier) {
-    Box {
+fun ShowItem(show: Show, modifier: Modifier = Modifier, onItemEpisodeClick: (String) -> Unit) {
+    Box(modifier = modifier.clickable(onClick = {
+        onItemEpisodeClick(show.id)
+    })) {
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))

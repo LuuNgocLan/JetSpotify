@@ -23,7 +23,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jetspotify.ui.navigation.JetSpotifyTab
 import com.example.jetspotify.ui.navigation.rememberJetSpotifyNavController
-import com.example.jetspotify.ui.utils.JetSpotifyContentType
 import com.example.jetspotify.ui.utils.JetSpotifyNavigationType
 
 @Composable
@@ -33,32 +32,16 @@ fun JetSpotifyApp(
 ) {
     val navHostController = rememberJetSpotifyNavController()
     val navBackStackEntry = navHostController.navController.currentBackStackEntryAsState()
-    val navigationType: JetSpotifyNavigationType
-    val contentType: JetSpotifyContentType
     val viewModel: JetSpotifyViewModel = viewModel()
     val jetSpotifyUiState = viewModel.uiState.collectAsState().value
 
-    when (windowSize) {
-        WindowWidthSizeClass.Compact -> {
-            navigationType = JetSpotifyNavigationType.BOTTOM_NAVIGATION
-            contentType = JetSpotifyContentType.LIST_ONLY
-        }
-
-        WindowWidthSizeClass.Medium -> {
-            navigationType = JetSpotifyNavigationType.NAVIGATION_RAIL
-            contentType = JetSpotifyContentType.LIST_ONLY
-        }
-
-        WindowWidthSizeClass.Expanded -> {
-            navigationType = JetSpotifyNavigationType.PERMANENT_NAVIGATION_DRAWER
-            contentType = JetSpotifyContentType.LIST_AND_DETAIL
-        }
-
-        else -> {
-            navigationType = JetSpotifyNavigationType.BOTTOM_NAVIGATION
-            contentType = JetSpotifyContentType.LIST_ONLY
-        }
+    val navigationType = when (windowSize) {
+        WindowWidthSizeClass.Compact -> JetSpotifyNavigationType.BOTTOM_NAVIGATION
+        WindowWidthSizeClass.Medium -> JetSpotifyNavigationType.NAVIGATION_RAIL
+        WindowWidthSizeClass.Expanded -> JetSpotifyNavigationType.PERMANENT_NAVIGATION_DRAWER
+        else -> JetSpotifyNavigationType.BOTTOM_NAVIGATION
     }
+
     JetSpotifyMainScreen(
         navController = navHostController.navController,
         navigationType = navigationType,

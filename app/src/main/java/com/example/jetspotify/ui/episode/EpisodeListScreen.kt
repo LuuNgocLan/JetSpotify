@@ -29,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,24 +42,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.jetspotify.R
-import com.example.jetspotify.data.model.LocalDataProvider
 import com.example.jetspotify.model.Episode
+import com.example.jetspotify.ui.navigation.JetSpotifyNavController
+import com.example.jetspotify.ui.navigation.rememberJetSpotifyNavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EpisodesScreen(
     modifier: Modifier = Modifier,
-    state: EpisodeUiState,
-    onBackClick: () -> Unit,
-    onEpisodeClick: (Episode) -> Unit,
-    onTabSelected: (Int) -> Unit,
-    onPlayClick: (Episode) -> Unit,
-    onAddClick: (Episode) -> Unit,
-    onDownloadClick: (Episode) -> Unit,
-    onShareClick: (Episode) -> Unit,
-    onMoreClick: (Episode) -> Unit
 ) {
+    val _uiState = remember { mutableStateOf<EpisodeUiState?>(null) }
+    val uiState = _uiState.value
+    val navController: JetSpotifyNavController = rememberJetSpotifyNavController()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -79,7 +76,7 @@ fun EpisodesScreen(
                 )
             },
             navigationIcon = {
-                IconButton(onClick = onBackClick) {
+                IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back",
@@ -137,15 +134,16 @@ fun EpisodesScreen(
 
 
         LazyColumn {
-            items(state.episodes) { episode ->
+            items(uiState?.episodes ?: emptyList()) { episode ->
                 EpisodeItem(
                     episode = episode,
-                    onClick = { onEpisodeClick(episode) },
-                    onPlayClick = { onPlayClick(episode) },
-                    onAddClick = { onAddClick(episode) },
-                    onDownloadClick = { onDownloadClick(episode) },
-                    onShareClick = { onShareClick(episode) },
-                    onMoreClick = { onMoreClick(episode) }
+                    onClick = {
+                    },
+                    onPlayClick = { },
+                    onAddClick = { },
+                    onDownloadClick = { },
+                    onShareClick = { },
+                    onMoreClick = { }
                 )
             }
         }
@@ -289,17 +287,6 @@ private fun EpisodeItem(
 @Composable
 fun PreviewEpisodesScreen() {
     EpisodesScreen(
-        state = EpisodeUiState(
-            episodes = LocalDataProvider.sampleEpisodeData()
-        ),
-        onBackClick = {},
-        onEpisodeClick = {},
-        onTabSelected = {},
-        onPlayClick = {},
-        onAddClick = {},
-        onDownloadClick = {},
-        onShareClick = {},
-        onMoreClick = {}
     )
 }
 

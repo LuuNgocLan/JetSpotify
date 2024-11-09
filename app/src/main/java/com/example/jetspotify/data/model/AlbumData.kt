@@ -1,6 +1,5 @@
 package com.example.jetspotify.model
 
-import com.example.jetspotify.data.model.Image
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,25 +10,26 @@ data class AlbumsData(
 
 @Serializable
 data class Album(
-    @SerialName("album_type") val albumType: String,
-    @SerialName("total_tracks") val totalTracks: Long,
-    @SerialName("available_markets") val availableMarkets: List<String>,
-    @SerialName("external_urls") val externalUrls: ExternalUrls,
-    val href: String,
-    val id: String,
-    val images: List<Image>,
-    val name: String,
-    @SerialName("release_date") val releaseDate: String,
-    @SerialName("release_date_precision") val releaseDatePrecision: String,
-    val restrictions: Restrictions,
-    val type: String,
-    val uri: String, val artists: List<Artist>,
-    val tracks: Tracks,
-    val copyrights: List<Copyright>,
-    @SerialName("external_ids") val externalIds: ExternalIds,
-    val genres: List<String>,
-    val label: String,
-    val popularity: Long
+    @SerialName("album_type") val albumType: String? = null,
+    @SerialName("total_tracks") val totalTracks: Long? = null,
+    @SerialName("available_markets") val availableMarkets: List<String>? = null,
+    @SerialName("external_urls") val externalUrls: ExternalUrls? = null,
+    val href: String? = null,
+    val id: String? = null,
+    val images: String? = null,
+    val name: String? = null,
+    @SerialName("release_date") val releaseDate: String? = null,
+    @SerialName("release_date_precision") val releaseDatePrecision: String? = null,
+    val restrictions: Restrictions? = null,
+    val type: String? = null,
+    val uri: String? = null,
+    val artists: List<Artist>? = null,
+    val tracks: Tracks? = null,
+    val copyrights: List<Copyright>? = null,
+    @SerialName("external_ids") val externalIds: ExternalIds? = null,
+    val genres: List<String>? = null,
+    val label: String? = null,
+    val popularity: Long? = null
 )
 
 @Serializable

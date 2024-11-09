@@ -19,4 +19,6 @@
     <dimen name="avatar_size">12dp</dimen>
     <dimen name="category_thumbnail_size">58dp</dimen>
     <dimen name="album_thumbnail_size">154dp</dimen>
+    <dimen name="drawer_padding_header">16dp</dimen>
+    <dimen name="drawer_width">154dp</dimen>
 </resources>

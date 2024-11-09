@@ -21,10 +21,3 @@ package com.example.jetspotify.ui.utils
 enum class JetSpotifyNavigationType {
     BOTTOM_NAVIGATION, NAVIGATION_RAIL, PERMANENT_NAVIGATION_DRAWER
 }
-
-/**
- * Content shown depending on size and state of device.
- */
-enum class JetSpotifyContentType {
-    LIST_ONLY, LIST_AND_DETAIL
-}
