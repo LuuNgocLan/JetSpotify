@@ -24,7 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +41,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.window.core.layout.WindowWidthSizeClass
 import coil3.compose.AsyncImage
 import com.example.jetspotify.R
 import com.example.jetspotify.components.HomeTopBar
@@ -60,7 +58,6 @@ fun HomeScreen(
     val context = LocalContext.current
     val _uiState = remember { mutableStateOf<HomeUiState?>(null) }
     val uiState = _uiState.value
-    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 
     // Load data once when the composable enters the composition
     LaunchedEffect(Unit) {
@@ -98,7 +95,7 @@ fun HomeScreen(
         // Categories Grid
         item {
             LazyVerticalGrid(
-                columns = GridCells.Fixed(if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) 4 else 2),
+                columns = GridCells.Fixed(4),
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .height(((58 + 8) * 2).dp), // Fixed height based on number of rows

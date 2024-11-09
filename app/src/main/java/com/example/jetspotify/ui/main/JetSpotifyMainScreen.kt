@@ -19,21 +19,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PermanentDrawerSheet
-import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -43,8 +34,6 @@ import com.example.jetspotify.R
 import com.example.jetspotify.ui.home.HomeScreen
 import com.example.jetspotify.ui.library.LibraryScreen
 import com.example.jetspotify.ui.navigation.JetSpotifyBottomNavigationBar
-import com.example.jetspotify.ui.navigation.JetSpotifyDrawerContent
-import com.example.jetspotify.ui.navigation.JetSpotifyNavigationRail
 import com.example.jetspotify.ui.navigation.JetSpotifyTab
 import com.example.jetspotify.ui.navigation.NavigationItemContent
 import com.example.jetspotify.ui.premium.PremiumScreen
@@ -87,39 +76,25 @@ fun JetSpotifyMainScreen(
             text = stringResource(id = R.string.tab_premium)
         )
     )
-    if (navigationType == JetSpotifyNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-        val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
-        PermanentNavigationDrawer(
-            drawerContent = {
-                PermanentDrawerSheet(Modifier.width(dimensionResource(R.dimen.drawer_width))) {
-                    JetSpotifyDrawerContent(
-                        selectedDestination = currentRoute?.let {
-                            JetSpotifyTab.values().first { e -> e.name == it }
-                        } ?: JetSpotifyTab.Home,
-                        onTabPressed = { jetSpotifyTab ->
-                            onTabPressed(jetSpotifyTab)
-                        },
-                        navItems = navigationItemContentList,
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .fillMaxHeight()
-                            .background(MaterialTheme.colorScheme.inverseOnSurface)
-                            .padding(top = dimensionResource(R.dimen.drawer_padding_header))
-                            .testTag(navigationDrawerContentDescription)
-                    )
-                }
-            },
-        ) {
-            JetSpotifyNavHost(navHostController = navController)
-        }
-    } else {
-        JetSpotifyAppContent(
-            navController = navController,
-            navigationType = navigationType,
-            onTabPressed = onTabPressed,
-            navItems = navigationItemContentList,
-        )
-    }
+//    if (navigationType == JetSpotifyNavigationType.PERMANENT_NAVIGATION_DRAWER) {
+//        val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
+//        /* 1. Config Permanent Navigation Drawer */
+//    } else {
+//        JetSpotifyAppContent(
+//            navController = navController,
+//            navigationType = navigationType,
+//            onTabPressed = onTabPressed,
+//            navItems = navigationItemContentList,
+//        )
+//    }
+
+    /* 0. Inititalize with Bottom Navigation Bar */
+    JetSpotifyAppContent(
+        navController = navController,
+        navigationType = navigationType,
+        onTabPressed = onTabPressed,
+        navItems = navigationItemContentList,
+    )
 }
 
 
@@ -132,38 +107,38 @@ private fun JetSpotifyAppContent(
 ) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
-    Row(modifier = Modifier.fillMaxSize()) {
-        AnimatedVisibility(visible = navigationType == JetSpotifyNavigationType.NAVIGATION_RAIL) {
-            JetSpotifyNavigationRail(
-                navItems = navItems,
-                currentTab = currentRoute?.let {
-                    JetSpotifyTab.values().first { e -> e.name == it }
-                } ?: JetSpotifyTab.Home,
-                onTabPressed = onTabPressed,
-            )
-        }
-        Box(
+//    Row(modifier = Modifier.fillMaxSize()) {
+//        AnimatedVisibility(visible = navigationType == JetSpotifyNavigationType.NAVIGATION_RAIL) {
+//            JetSpotifyNavigationRail(
+//                navItems = navItems,
+//                currentTab = currentRoute?.let {
+//                    JetSpotifyTab.values().first { e -> e.name == it }
+//                } ?: JetSpotifyTab.Home,
+//                onTabPressed = onTabPressed,
+//            )
+//        }
+//        /* 2. Config Bottom Navigation Bar */
+//    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.inverseOnSurface)
+    ) {
+        JetSpotifyNavHost(navHostController = navController)
+        // Bottom Navigation
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.CenterVertically)
-                .background(MaterialTheme.colorScheme.inverseOnSurface)
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
         ) {
-            JetSpotifyNavHost(navHostController = navController)
-            // Bottom Navigation
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-            ) {
-                AnimatedVisibility(visible = navigationType == JetSpotifyNavigationType.BOTTOM_NAVIGATION) {
-                    JetSpotifyBottomNavigationBar(
-                        currentTab = currentRoute?.let {
-                            JetSpotifyTab.values().first { e -> e.name == it }
-                        } ?: JetSpotifyTab.Home,
-                        onTabPressed = onTabPressed,
-                        navItems = navItems,
-                    )
-                }
+            AnimatedVisibility(visible = true) {
+                JetSpotifyBottomNavigationBar(
+                    currentTab = currentRoute?.let {
+                        JetSpotifyTab.values().first { e -> e.name == it }
+                    } ?: JetSpotifyTab.Home,
+                    onTabPressed = onTabPressed,
+                    navItems = navItems,
+                )
             }
         }
     }
