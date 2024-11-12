@@ -1,4 +1,6 @@
-# This is a repository to prepare for the Hands-on workshop at Devfest HCMC 2024
+# This repository contains resources for the hands-on workshop at DevFest HCMC 2024
+
+[Slide](https://docs.google.com/presentation/d/1A_uCDbTChmW3URV2wxJG0yfSiU8_na4R4dDYOYQQA10/edit?usp=sharing)
 
 ## Overview
 
@@ -16,9 +18,9 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 - Build Adaptive Navigation trên các dạng màn hình Compact, Medium, Expanded
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/d6a92b85-7f91-491c-8ab1-7a0ac9f05ddb" alt="Image 1" style="width: 20%;">
-  <img src="https://github.com/user-attachments/assets/75975f17-5019-4f72-a2b2-fb8f5be44b47" alt="Image 2" style="width: 30%;">
-  <img src="https://github.com/user-attachments/assets/32b36ace-ec5f-4874-abf7-cdb860f734cc" alt="Image 3" style="width: 50%;">
+  <img src="https://github.com/user-attachments/assets/9b230880-cfb5-40c9-8cdc-aa71fabe6ba2" alt="Image 1" style="width: 20%;">
+  <img src="https://github.com/user-attachments/assets/ded0c792-7c7b-49b3-9a3e-f1bd9a7d10ce" alt="Image 2" style="width: 30%;">
+  <img src="https://github.com/user-attachments/assets/6bb67887-981e-484e-9f3f-d81d5ee0989e" alt="Image 3" style="width: 50%;">
 </div>
 
 - Chuyển đổi cách bố trí layout màn hình Home trên các màn hình Compact, Medium, Expanded
@@ -67,10 +69,13 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 
 ## Code overview
 
+```
+git checkout feat/starter-dev-fest
+```
 
 The starter code chứa các màn hình sau đây:
 
-/// update struction layout later
+![gif](https://github.com/user-attachments/assets/7235dfd1-9607-4780-933b-4a7217948b32)
 
 
 ## Instructions
