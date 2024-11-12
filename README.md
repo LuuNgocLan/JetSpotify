@@ -70,7 +70,7 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 ## Code overview
 
 ```
-git checkout feat/starter-dev-fest
+git checkout feat/dev-fest-starter
 ```
 
 The starter code chứa các màn hình sau đây:
