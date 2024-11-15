@@ -16,12 +16,10 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 - Build Adaptive Navigation trên các dạng màn hình Compact, Medium, Expanded
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/d6a92b85-7f91-491c-8ab1-7a0ac9f05ddb" alt="Image 1" style="width: 20%;">
-  <img src="https://github.com/user-attachments/assets/75975f17-5019-4f72-a2b2-fb8f5be44b47" alt="Image 2" style="width: 30%;">
-  <img src="https://github.com/user-attachments/assets/32b36ace-ec5f-4874-abf7-cdb860f734cc" alt="Image 3" style="width: 50%;">
+  <img src="https://github.com/user-attachments/assets/f213b55e-993b-4420-be8c-3aa5b83d193d" alt="Image 1" style="width: 20%;">
+  <img src="https://github.com/user-attachments/assets/5b58d20a-5ca6-4d35-8858-4ece13891813" alt="Image 2" style="width: 30%;">
+  <img src="https://github.com/user-attachments/assets/fab7ec5c-37a5-4d48-8bc1-a1aaa36a46fb" alt="Image 3" style="width: 50%;">
 </div>
-
-- Chuyển đổi cách bố trí layout màn hình Home trên các màn hình Compact, Medium, Expanded
 
 - Đảm bảo ứng dụng liên tục khi resize, change settings
 
@@ -41,7 +39,7 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 
 ## Prerequisites
 
-- JDK >= 17 
+- JDK >= 11 
 - Android Studio Koala or latest
 - Gradle >= 8.5.2
 - Kotlin >= 1.8 
@@ -68,10 +66,9 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 ## Code overview
 
 
-The starter code chứa các màn hình sau đây:
+The starter code chứa các màn hình sau đây
 
-/// update struction layout later
-
+![gif](https://github.com/user-attachments/assets/db77cad8-9eb5-4a7b-b7f6-c74a86733fc6)
 
 ## Instructions
 
