@@ -43,7 +43,7 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 
 ## Prerequisites
 
-- JDK >= 17 
+- JDK >= 11 
 - Android Studio Koala or latest
 - Gradle >= 8.5.2
 - Kotlin >= 1.8 
