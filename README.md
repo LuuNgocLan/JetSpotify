@@ -27,6 +27,13 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 
 - Đảm bảo ứng dụng liên tục khi resize, change settings
 
+## Timeline
+
+- [x] Navigation Adaptive  
+- [ ] Applying List-detail layout  
+- [ ] Migrating to KMM  
+- [ ] Integrating Spotify API  
+
 ## References
 
 - Layout Spotify app on Phone, Tablet, Chromebook 
