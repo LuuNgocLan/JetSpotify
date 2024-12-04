@@ -30,9 +30,9 @@ Với việc ngày càng nhiều các thiết bị lớn như foldable phone, ta
 ## Timeline
 
 - [x] Navigation Adaptive  
-- [ ] Applying List-detail layout  
+- [ ] Applying List-detail layout
+- [ ] Integrating Spotify API   
 - [ ] Migrating to KMM  
-- [ ] Integrating Spotify API  
 
 ## References
 
@@ -131,9 +131,6 @@ The UI is what the user sees, and the UI state is what the app says they should 
 
 
 ![image](https://github.com/user-attachments/assets/2ed52356-3636-4b51-bae0-5668fc304639)
-
-
-
 
 
 ## Conclusion
