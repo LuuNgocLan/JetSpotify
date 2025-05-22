@@ -18,7 +18,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 android {
@@ -59,7 +59,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.8"  // Updated to match Kotlin 1.9.22
     }
 
     packaging {
@@ -72,7 +72,7 @@ android {
 dependencies {
 
     implementation("androidx.activity:activity-compose:1.9.0")
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycle_version"]}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["lifecycle_version"]}")
     // Compose
@@ -97,7 +97,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc02")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0-rc02")
 
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.06.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
