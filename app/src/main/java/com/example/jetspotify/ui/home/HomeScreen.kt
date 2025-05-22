@@ -54,8 +54,9 @@ import com.example.jetspotify.model.Album
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory()),
+        onPlaylistClick: (String) -> Unit,
+        modifier: Modifier = Modifier,
+        viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory()),
 ) {
     val context = LocalContext.current
     val _uiState = remember { mutableStateOf<HomeUiState?>(null) }
@@ -67,23 +68,20 @@ fun HomeScreen(
         val categories = LocalDataProvider.loadCategories(context = context)
         val albums = LocalDataProvider.loadAlbums()
         val shows = LocalDataProvider.sampleShowsData()
-        _uiState.value = uiState?.copy(
-            categories = categories, albums = albums, shows = shows
-        ) ?: HomeUiState(
-            categories = categories, albums = albums, shows = shows
-        )
+        _uiState.value =
+                uiState?.copy(categories = categories, albums = albums, shows = shows)
+                        ?: HomeUiState(categories = categories, albums = albums, shows = shows)
     }
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentPadding = PaddingValues(bottom = 80.dp) // For bottom navigation
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+            contentPadding = PaddingValues(bottom = 80.dp) // For bottom navigation
     ) {
         // Sticky header
         stickyHeader {
             Surface(
-                modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.background
             ) {
                 Column {
                     HomeTopBar()
@@ -91,23 +89,30 @@ fun HomeScreen(
                 }
             }
         }
-        item {
-            Spacer(modifier = Modifier.height(4.dp))
-        }
+        item { Spacer(modifier = Modifier.height(4.dp)) }
 
         // Categories Grid
         item {
             LazyVerticalGrid(
-                columns = GridCells.Fixed(if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) 4 else 2),
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .height(((58 + 8) * 2).dp), // Fixed height based on number of rows
-                userScrollEnabled = false // Disable grid scrolling
+                    columns =
+                            GridCells.Fixed(
+                                    if (windowSizeClass.windowWidthSizeClass ==
+                                                    WindowWidthSizeClass.EXPANDED
+                                    )
+                                            4
+                                    else 2
+                            ),
+                    modifier =
+                            Modifier.padding(horizontal = 16.dp)
+                                    .height(
+                                            ((58 + 8) * 2).dp
+                                    ), // Fixed height based on number of rows
+                    userScrollEnabled = false // Disable grid scrolling
             ) {
-
                 items(uiState?.categories?.take(8) ?: emptyList()) { category ->
                     CategoryItem(
-                        category = category, modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
+                            category = category,
+                            modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
                     )
                 }
             }
@@ -116,21 +121,23 @@ fun HomeScreen(
         // Shows
         item {
             Text(
-                text = "Your shows", style = MaterialTheme.typography.titleLarge.copy(
-                    color = Color.White, fontWeight = FontWeight.Bold
-                ), modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                    text = "Your shows",
+                    style =
+                            MaterialTheme.typography.titleLarge.copy(
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold
+                            ),
+                    modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
             )
         }
 
         item {
             LazyRow(
-                modifier = Modifier.padding(start = 16.dp),
-                contentPadding = PaddingValues(end = 16.dp)
+                    modifier = Modifier.padding(start = 16.dp),
+                    contentPadding = PaddingValues(end = 16.dp)
             ) {
                 items(uiState?.shows ?: emptyList()) { show ->
-                    ShowItem(
-                        show = show, modifier = Modifier.padding(end = 8.dp)
-                    ) {
+                    ShowItem(show = show, modifier = Modifier.padding(end = 8.dp)) {
                         /* Handle on item click */
                     }
                 }
@@ -140,30 +147,32 @@ fun HomeScreen(
         // Your top mixes section
         item {
             Text(
-                text = "Your top mixes", style = MaterialTheme.typography.titleLarge.copy(
-                    color = Color.White, fontWeight = FontWeight.Bold
-                ), modifier = Modifier.padding(16.dp)
+                    text = "Your top mixes",
+                    style =
+                            MaterialTheme.typography.titleLarge.copy(
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold
+                            ),
+                    modifier = Modifier.padding(16.dp)
             )
         }
 
         item {
             LazyRow(
-                modifier = Modifier.padding(start = 16.dp),
-                contentPadding = PaddingValues(end = 16.dp)
+                    modifier = Modifier.padding(start = 16.dp),
+                    contentPadding = PaddingValues(end = 16.dp)
             ) {
                 items(uiState?.albums ?: emptyList()) { album ->
                     AlbumItem(
-                        album = album, modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        /* Handle on item click */
-                    }
+                        album = album, 
+                        modifier = Modifier.padding(end = 8.dp),
+                        onPlaylistClick = onPlaylistClick
+                    )
                 }
             }
         }
 
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
     }
 }
 
@@ -171,128 +180,146 @@ fun HomeScreen(
 fun CategoryItem(category: Category, modifier: Modifier = Modifier) {
     Box {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(dimensionResource(id = R.dimen.category_thumbnail_size))
-                .clip(RoundedCornerShape(4.dp))
-                .background(color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier =
+                        modifier.fillMaxWidth()
+                                .height(dimensionResource(id = R.dimen.category_thumbnail_size))
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(
+                                        color =
+                                                MaterialTheme.colorScheme.onSecondary.copy(
+                                                        alpha = 0.5f
+                                                )
+                                ),
         ) {
             AsyncImage(
-                modifier = Modifier
-                    .size(dimensionResource(id = R.dimen.category_thumbnail_size))
-                    .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
-                    .background(color = Color.Gray.copy(alpha = 0.5f)),
-                model = category.icons.first().url ?: "",
-                contentDescription = "Category",
-                contentScale = ContentScale.Crop,
+                    modifier =
+                            Modifier.size(dimensionResource(id = R.dimen.category_thumbnail_size))
+                                    .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
+                                    .background(color = Color.Gray.copy(alpha = 0.5f)),
+                    model = category.icons.first().url ?: "",
+                    contentDescription = "Category",
+                    contentScale = ContentScale.Crop,
             )
             Text(
-                text = category.name,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium
-                ),
-                modifier = Modifier.padding(16.dp)
+                    text = category.name,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Medium
+                            ),
+                    modifier = Modifier.padding(16.dp)
             )
         }
     }
 }
-
 
 @Composable
-fun AlbumItem(album: Album, modifier: Modifier = Modifier, onItemEpisodeClick: (String) -> Unit) {
+fun AlbumItem(album: Album, modifier: Modifier = Modifier, onPlaylistClick: (String) -> Unit) {
     Box(
-        modifier = modifier.clickable(
-            onClick = {
-                /*Handle click on item */
-            },
-        )
+            modifier =
+                    modifier.clickable(
+                            onClick = {
+                                // Navigate to playlist detail screen with the album ID as the
+                                // playlist ID
+                                onPlaylistClick(album.id ?: "1")
+                            }
+                    )
     ) {
         Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
+                horizontalAlignment = Alignment.Start,
+                modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
         ) {
             AsyncImage(
-                modifier = Modifier
-                    .size(dimensionResource(id = R.dimen.album_thumbnail_size))
-                    .background(color = Color.Gray.copy(alpha = 0.5f)),
-                model = album.images ?: "",
-                contentDescription = "Album",
-                contentScale = ContentScale.Crop,
+                    modifier =
+                            Modifier.size(dimensionResource(id = R.dimen.album_thumbnail_size))
+                                    .background(color = Color.Gray.copy(alpha = 0.5f)),
+                    model = album.images ?: "",
+                    contentDescription = "Album",
+                    contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = album.name ?: "",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold
-                ),
+                    text = album.name ?: "",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color = Color.White,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold
+                            ),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = album.artists?.map { it.name }?.joinToString("-") ?: "",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold
-                ),
+                    text = album.artists?.map { it.name }?.joinToString("-") ?: "",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color = Color.White,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                            ),
             )
         }
     }
 }
-
 
 @Composable
 fun ShowItem(show: Show, modifier: Modifier = Modifier, onItemEpisodeClick: (String) -> Unit) {
-    Box(modifier = modifier.clickable(onClick = {
-        onItemEpisodeClick(show.id)
-    })) {
+    Box(modifier = modifier.clickable(onClick = { onItemEpisodeClick(show.id) })) {
         Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
+                horizontalAlignment = Alignment.Start,
+                modifier = modifier.width(dimensionResource(id = R.dimen.album_thumbnail_size))
         ) {
             AsyncImage(
-                modifier = Modifier
-                    .size(dimensionResource(id = R.dimen.album_thumbnail_size))
-                    .background(color = Color.Gray.copy(alpha = 0.5f))
-                    .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)),
-                model = show.thumbnail,
-                contentDescription = show.showName,
-                contentScale = ContentScale.Crop,
+                    modifier =
+                            Modifier.size(dimensionResource(id = R.dimen.album_thumbnail_size))
+                                    .background(color = Color.Gray.copy(alpha = 0.5f))
+                                    .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)),
+                    model = show.thumbnail,
+                    contentDescription = show.showName,
+                    contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = show.category.map { it }.joinToString("-"),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold
-                ),
+                    text = show.category.map { it }.joinToString("-"),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold
+                            ),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = show.showName,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Medium
-                ),
+                    text = show.showName,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color = Color.White,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Medium
+                            ),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Show-${show.showType}",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.Gray, fontSize = 11.sp, fontWeight = FontWeight.Medium
-                ),
+                    text = "Show-${show.showType}",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color = Color.Gray,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Medium
+                            ),
             )
         }
     }
@@ -301,5 +328,5 @@ fun ShowItem(show: Show, modifier: Modifier = Modifier, onItemEpisodeClick: (Str
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(onPlaylistClick = {})
 }

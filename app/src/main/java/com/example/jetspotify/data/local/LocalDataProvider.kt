@@ -1,6 +1,8 @@
 package com.example.jetspotify.data.model
 
 import android.content.Context
+import com.example.jetspotify.data.model.PlaylistData
+import com.example.jetspotify.data.model.SpotifyPlaylist
 import com.example.jetspotify.model.Album
 import com.example.jetspotify.model.Episode
 import kotlinx.serialization.json.Json
@@ -28,9 +30,9 @@ object LocalDataProvider {
 
     }
 
-    fun loadPlaylists(context: Context): List<PlayList> {
+    fun loadPlaylists(context: Context): List<SpotifyPlaylist> {
         val json = loadJSONFromAsset(context, "playlists_data.json")
-        val playlistData = Json.decodeFromString<PlayListData>(json.toString())
+        val playlistData = Json.decodeFromString<PlaylistData>(json.toString())
         return playlistData.items
     }
 

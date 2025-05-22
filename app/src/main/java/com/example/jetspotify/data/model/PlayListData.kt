@@ -5,18 +5,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PlayListData(
+data class PlaylistData(
     val href: String,
     val limit: Long,
     val next: String,
     val offset: Long,
     val previous: String,
     val total: Long,
-    val items: List<PlayList>
+    val items: List<SpotifyPlaylist>
 )
 
 @Serializable
-data class PlayList(
+data class SpotifyPlaylist(
     val collaborative: Boolean,
     val description: String,
     @SerialName("external_urls") val externalUrls: ItemExternalUrls,
