@@ -23,22 +23,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.jetspotify.ui.theme.SpotifyColors
-
+import com.example.jetspotify.ui.theme.SpotifyPalette
 
 @Composable
 fun JetSpotifyDrawerContent(
-    selectedDestination: JetSpotifyTab,
-    navItems: List<NavigationItemContent>,
-    onTabPressed: ((JetSpotifyTab) -> Unit),
-    modifier: Modifier = Modifier
+        selectedDestination: JetSpotifyTab,
+        navItems: List<NavigationItemContent>,
+        onTabPressed: ((JetSpotifyTab) -> Unit),
+        modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         for (navItem in navItems) {
             DrawerNavigationItem(
-                selected = selectedDestination == navItem.jetSpotifyTab,
-                tab = navItem,
-                onItemClick = { onTabPressed(navItem.jetSpotifyTab) }
+                    selected = selectedDestination == navItem.jetSpotifyTab,
+                    tab = navItem,
+                    onItemClick = { onTabPressed(navItem.jetSpotifyTab) }
             )
         }
     }
@@ -46,45 +45,51 @@ fun JetSpotifyDrawerContent(
 
 @Composable
 private fun DrawerNavigationItem(
-    tab: NavigationItemContent,
-    selected: Boolean,
-    onItemClick: () -> Unit,
-    modifier: Modifier = Modifier
+        tab: NavigationItemContent,
+        selected: Boolean,
+        onItemClick: () -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Surface(
-        selected = selected,
-        onClick = onItemClick,
-        color = Color.Transparent,
-        shape = RoundedCornerShape(4.dp),
-        modifier = modifier.fillMaxWidth()
+            selected = selected,
+            onClick = onItemClick,
+            color = Color.Transparent,
+            shape = RoundedCornerShape(4.dp),
+            modifier = modifier.fillMaxWidth()
     ) {
         Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .height(40.dp)
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = 8.dp).height(40.dp)
         ) {
             Box(
-                modifier = Modifier
-                    .height(36.dp)
-                    .width(4.dp)
-                    .background(if (selected) SpotifyColors.SpotifyGreen else Color.Transparent)
+                    modifier =
+                            Modifier.height(36.dp)
+                                    .width(4.dp)
+                                    .background(
+                                            if (selected) SpotifyPalette.green
+                                            else Color.Transparent
+                                    )
             )
             Spacer(modifier = Modifier.width(12.dp))
             Image(
-                painter = painterResource(id = if (selected) tab.selectedIcon else tab.unSelectedIcon),
-                contentDescription = tab.text,
-                colorFilter = if (selected) ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary) else ColorFilter.tint(
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                    painter =
+                            painterResource(
+                                    id = if (selected) tab.selectedIcon else tab.unSelectedIcon
+                            ),
+                    contentDescription = tab.text,
+                    colorFilter =
+                            if (selected)
+                                    ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                            else ColorFilter.tint(color = MaterialTheme.colorScheme.secondary)
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = tab.text,
-                style = MaterialTheme.typography.bodyLarge,
-                color = if (selected) MaterialTheme.colorScheme.onSecondary else
-                    MaterialTheme.colorScheme.secondary
+                    text = tab.text,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color =
+                            if (selected) MaterialTheme.colorScheme.onSecondary
+                            else MaterialTheme.colorScheme.secondary
             )
         }
     }

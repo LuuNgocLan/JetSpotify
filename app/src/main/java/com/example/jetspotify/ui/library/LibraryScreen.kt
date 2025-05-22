@@ -6,15 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.jetspotify.ui.theme.SpotifyColors
+import com.example.jetspotify.ui.theme.SpotifyPalette
 
 @Composable
 fun LibraryScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = SpotifyColors.SpotifyDarkGrey)
-    ) {
+    Box(modifier = Modifier.fillMaxSize().background(color = SpotifyPalette.black)) {
         Text(text = "LibraryScreen")
     }
 }
