@@ -22,11 +22,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.jetspotify"
+    namespace = "com.jetspotify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.jetspotify"
+        applicationId = "com.jetspotify"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -28,7 +28,7 @@
         android:theme="@style/Theme.Spotify"
         tools:targetApi="34">
         <activity
-            android:name="com.example.jetspotify.MainActivity"
+            android:name="com.jetspotify.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Spotify">
             <intent-filter>

@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Jetspotify</string>
+    <string name="app_name">JetSpotify</string>
     <string name="navigation_drawer">Navigation Drawer</string>
     <string name="navigation_rail">Navigation Rail</string>
     <string name="navigation_bottom">Navigation Bottom</string>
@@ -32,8 +32,4 @@
     <string name="all">All</string>
     <string name="music">Music</string>
     <string name="podcast">Podcasts</string>
-
-    <string name="account_1_first_name">Jeff</string>
-    <string name="account_1_last_name">Hansen</string>
-    <string name="account_1_email">hikingfan@altostrat.com</string>
 </resources>
