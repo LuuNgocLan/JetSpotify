@@ -31,9 +31,6 @@ fun JetSpotifyApp(
     modifier: Modifier = Modifier,
 ) {
     val navHostController = rememberJetSpotifyNavController()
-    val navBackStackEntry = navHostController.navController.currentBackStackEntryAsState()
-    val viewModel: JetSpotifyViewModel = viewModel()
-    val jetSpotifyUiState = viewModel.uiState.collectAsState().value
 
     val navigationType = when (windowSize) {
         WindowWidthSizeClass.Compact -> JetSpotifyNavigationType.BOTTOM_NAVIGATION
@@ -47,9 +44,6 @@ fun JetSpotifyApp(
         navigationType = navigationType,
         onTabPressed = { jetSpotifyTab: JetSpotifyTab ->
             navHostController.navigateToBottomBarRoute(jetSpotifyTab.name)
-        },
-        onDetailScreenBackPressed = {
-            // Handle back press
         },
         modifier = modifier
     )

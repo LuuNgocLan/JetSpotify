@@ -91,6 +91,11 @@ dependencies {
     implementation("androidx.compose.material3.adaptive:adaptive-layout:1.0.0-beta04")
     implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.0.0-beta04")
     
+    // Window manager for foldables support
+    implementation("androidx.window:window:1.2.0")
+    // Accompanist adaptive
+    implementation("com.google.accompanist:accompanist-adaptive:0.32.0")
+    
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     // Coil
